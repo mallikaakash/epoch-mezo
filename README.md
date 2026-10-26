@@ -12,7 +12,7 @@ Epoch Lite is a **Mezo testnet proof of rights separation**: a seller escrows a 
 | Local lifecycle and adverse-path tests | 13 Foundry tests pass, including 256 fuzz cases for funded reward accounting |
 | Local multi-account Anvil scenario | Passed: separate seller, buyer, operator, and claim recipient; funded payout and original NFT return |
 | Next.js + wagmi/viem frontend | Production build passes; MetaMask deployment screen added at `/deploy` |
-| Mezo testnet deployment | **Not deployed** |
+| Mezo testnet deployment | Four Epoch contracts deployed and wired; addresses in `deployments/mezo-testnet.json` |
 | Live wallet-to-wallet MUSD transaction trace | **Not done** |
 | Pitch deck | Local HTML draft at `/pitch.html`; labeled with mock and deployment limits, not published |
 | Public GitHub repository | [Published](https://github.com/mallikaakash/epoch-mezo) |
@@ -59,7 +59,7 @@ Before broadcasting, inspect the generated transactions and fund the signer with
 
 [AKINDO](https://app.akindo.io/wave-hacks/OVOO0gdrVU8379D10) requires a **working MUSD and/or MEZO integration**, a working deployment on a supported chain (Mezo testnet accepted), a live project link, public GitHub repo, project deck, and two-minute pitch video. The full checklist is in [Setup.md](./Setup.md).
 
-**This repository is currently a local prototype, not a valid Wave 1 submission.** If the full purchase/settlement/return flow is deployed and shown with genuine testnet MEZO or MUSD, Epoch Lite appears to meet the event's stated hard technology requirements, subject to AKINDO's screening. The mock rewards and position likely limit the score for Mezo integration and product viability; they must be disclosed in every material. A demo-token-only deployment would not establish the mandatory MUSD/MEZO integration.
+**The contracts are deployed and wired, but a testnet purchase and reward lifecycle have not been verified yet; this is not a complete Wave 1 submission.** If the purchase/settlement/return flow is shown with genuine testnet MEZO, Epoch Lite appears to meet the event's stated hard technology requirements, subject to AKINDO's screening. The mock rewards and position likely limit the score for Mezo integration and product viability; they must be disclosed in every material. A demo-token-only deployment would not establish the mandatory MUSD/MEZO integration.
 
 ## Known limitations
 

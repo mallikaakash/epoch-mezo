@@ -1,6 +1,15 @@
 {
   "chainId": 31611,
-  "status": "not_deployed",
-  "addresses": {},
-  "note": "No contract addresses or transaction hashes have been verified yet."
+  "status": "deployed_wired",
+  "deployer": "0x68C6e946d815E9df17548f822379ADD9D9439530",
+  "operator": "0x68C6e946d815E9df17548f822379ADD9D9439530",
+  "economicMode": "REAL_TESTNET_MEZO",
+  "addresses": {
+    "position": "0x093F755a9E5bD86d8E7e480Ea693CfadA578B094",
+    "claim": "0xdb603d247523d337cE145aA5d191B84B33a0f3DE",
+    "source": "0x02F71a3CBE00258f924c76a31640F711F9F03218",
+    "market": "0x111f7DBd762e8b7d58eC6d2687a61446300B40EF",
+    "token": "0x7B7c000000000000000000000000000000000001"
+  },
+  "note": "Onchain code at all five addresses, official MEZO token reference, and claim/source market wiring verified via Mezo testnet RPC on 26 October 2026. User transaction hashes and full trade lifecycle still to be recorded."
 }

@@ -84,10 +84,10 @@ The `.env.example` is a reference only; it contains no secrets. The UI currently
 - [x] Foundry contract lifecycle tests and ABI export.
 - [x] Next.js wallet and contract console with chain reads and wallet-signed writes; local production build passes.
 - [ ] Owner connects a wallet, completes faucet CAPTCHA, and obtains test funds.
-- [ ] Deploy and verify the contracts on Mezo testnet with official testnet MEZO or MUSD; use a signer controlled by the project owner. The MetaMask deployment screen is at `/deploy`.
+- [x] Deploy and verify the four Epoch contracts and their wiring on Mezo testnet with official testnet MEZO. Addresses are in `deployments/mezo-testnet.json`; user controls the signer.
 - [ ] Implement and test that workflow, deploy it publicly on Mezo testnet, and collect explorer links/transaction evidence.
 - [x] Publish the [public GitHub repo](https://github.com/mallikaakash/epoch-mezo).
 - [x] Publish the [live frontend](https://mezo-buildathon.vercel.app/) and [draft deck](https://mezo-buildathon.vercel.app/pitch.html). Both returned HTTP 200 on 26 October; contract addresses still need deployment and publication.
 - [ ] Record the two-minute video and submit through AKINDO before the deadline.
 
-No Epoch contract or frontend has been deployed publicly yet. No Epoch token transaction has been executed or verified. Local passing tests alone **do not satisfy** AKINDO's integration and deployment requirements. See [README.md](./README.md) for precise progress and mock boundaries.
+Epoch contracts and the frontend are deployed publicly, but no Epoch trade, mock reward funding, or redemption has yet been verified on Mezo testnet. Deployment and local tests alone **do not establish the working MEZO transaction lifecycle**. See [README.md](./README.md) for precise progress and mock boundaries.

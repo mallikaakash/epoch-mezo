@@ -16,7 +16,8 @@ Epoch Lite is a **Mezo testnet proof of rights separation**: a seller escrows a 
 | Live wallet-to-wallet MUSD transaction trace | **Not done** |
 | Pitch deck | Local HTML draft at `/pitch.html`; labeled with mock and deployment limits, not published |
 | Public GitHub repository | [Published](https://github.com/mallikaakash/epoch-mezo) |
-| Public site, two-minute video, AKINDO submission | **Not verified/done** |
+| Public site and draft deck | [Frontend](https://mezo-buildathon.vercel.app/) and [deck](https://mezo-buildathon.vercel.app/pitch.html) returned HTTP 200 on 26 October; contracts remain unconfigured |
+| Two-minute video and AKINDO submission | **Not done** |
 
 The frontend uses live RPC reads and signed wallet transactions once deployment addresses are supplied. It does not use a database to declare settlement. Until deployment, it shows an explicit unconfigured state.
 

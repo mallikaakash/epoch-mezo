@@ -11,10 +11,12 @@ Epoch Lite is a **Mezo testnet proof of rights separation**: a seller escrows a 
 | Market, claim NFT, mock position NFT, funded mock reward source | Implemented and compiling |
 | Local lifecycle and adverse-path tests | 13 Foundry tests pass, including 256 fuzz cases for funded reward accounting |
 | Local multi-account Anvil scenario | Passed: separate seller, buyer, operator, and claim recipient; funded payout and original NFT return |
-| Next.js + wagmi/viem frontend | Production build passes; unconfigured preview renders |
+| Next.js + wagmi/viem frontend | Production build passes; MetaMask deployment screen added at `/deploy` |
 | Mezo testnet deployment | **Not deployed** |
 | Live wallet-to-wallet MUSD transaction trace | **Not done** |
-| Public site, repo, deck, two-minute video, AKINDO submission | **Not done** |
+| Pitch deck | Local HTML draft at `/pitch.html`; labeled with mock and deployment limits, not published |
+| Public GitHub repository | [Published](https://github.com/mallikaakash/epoch-mezo) |
+| Public site, two-minute video, AKINDO submission | **Not verified/done** |
 
 The frontend uses live RPC reads and signed wallet transactions once deployment addresses are supplied. It does not use a database to declare settlement. Until deployment, it shows an explicit unconfigured state.
 
@@ -30,7 +32,7 @@ npm run build
 npm run dev
 ```
 
-Open `http://localhost:3000`. `npm run contracts:build` exports the compiled ABIs used by the frontend to `lib/abis.json`. The old read-only wallet starter remains under `public/` and can be run with `npm run starter`, but the main application is the Next.js frontend.
+Open `http://localhost:3000`. `npm run contracts:build` exports compiled ABIs and bytecode to `lib/abis.json` and `lib/deploy-artifacts.json` for the web client. The old read-only wallet starter remains under `public/` and can be run with `npm run starter`, but the main application is the Next.js frontend.
 
 For a disposable **local-only** transaction run, start Anvil on `127.0.0.1:8545`, deploy with `Deploy.s.sol` using Anvil's unlocked first account as `ADMIN_ADDRESS`, its third account as `OPERATOR_ADDRESS`, and `USE_DEMO_TOKEN=true`. Then run `npm run demo:local`. The script checks chain ID `31337`, uses five Anvil accounts, advances **local** time, verifies the final NFT and token balances, and prints its local transaction hashes. These hashes are **not Mezo testnet evidence**.
 
@@ -48,7 +50,7 @@ If test MUSD is unavailable, the same contracts can use official Mezo testnet **
 
 ## Testnet deployment gate
 
-The deployment script is [Deploy.s.sol](./contracts/script/Deploy.s.sol). It rejects mainnet and wires market-only roles. Provide `ADMIN_ADDRESS` (the deployer signer), `OPERATOR_ADDRESS`, `USE_DEMO_TOKEN=false`, and `PAYMENT_TOKEN_ADDRESS` in an ignored local environment. **Do not place or send a private key in chat or the repository.** Use a signer managed by your wallet/Foundry locally. A public address alone cannot authorize deployment transactions.
+The MetaMask deployment screen at `/deploy` deploys the four contracts and links the claim and source to the market through six separate wallet confirmations. It saves confirmed addresses and transaction hashes in this browser's local storage, and verifies contract code and wiring onchain. Copy the public deployment record into `deployments/mezo-testnet.json` after checking it; set the five `NEXT_PUBLIC_*_ADDRESS` variables for a public frontend so all visitors see the same deployment. The alternative Foundry deployment script is [Deploy.s.sol](./contracts/script/Deploy.s.sol). It rejects mainnet and wires market-only roles. Provide `ADMIN_ADDRESS` (the deployer signer), `OPERATOR_ADDRESS`, `USE_DEMO_TOKEN=false`, and `PAYMENT_TOKEN_ADDRESS` in an ignored local environment. **Do not place or send a private key in chat or the repository.** Use a signer managed by your wallet/Foundry locally. A public address alone cannot authorize deployment transactions.
 
 Before broadcasting, inspect the generated transactions and fund the signer with test BTC. After broadcasting, record verified contract addresses and transaction hashes in `deployments/mezo-testnet.json` and `.env.local`, then restart Next.js. Do not populate that manifest from predicted addresses or simulation output. The demo requires separate seller, buyer, and mock-source operator roles; these can be separate test accounts under one wallet, but each transaction must be signed by the role's account. The official [Mezo testnet faucet](https://faucet.test.mezo.org/) provides test BTC and MEZO. Test MUSD must be acquired through the [Mezo testnet app](https://testnet.mezo.org/) by borrowing or swapping; the faucet alone is not assumed to supply it.
 
@@ -56,7 +58,7 @@ Before broadcasting, inspect the generated transactions and fund the signer with
 
 [AKINDO](https://app.akindo.io/wave-hacks/OVOO0gdrVU8379D10) requires a **working MUSD and/or MEZO integration**, a working deployment on a supported chain (Mezo testnet accepted), a live project link, public GitHub repo, project deck, and two-minute pitch video. The full checklist is in [Setup.md](./Setup.md).
 
-**This repository is currently a local prototype, not a valid Wave 1 submission.** If the full purchase/settlement/return flow is deployed and shown with genuine testnet MUSD, Epoch Lite appears to meet the event's stated hard technology requirements, subject to AKINDO's screening. The mock rewards and position likely limit the score for Mezo integration and product viability; they must be disclosed in every material. A demo-token-only deployment would not establish the mandatory MUSD/MEZO integration.
+**This repository is currently a local prototype, not a valid Wave 1 submission.** If the full purchase/settlement/return flow is deployed and shown with genuine testnet MEZO or MUSD, Epoch Lite appears to meet the event's stated hard technology requirements, subject to AKINDO's screening. The mock rewards and position likely limit the score for Mezo integration and product viability; they must be disclosed in every material. A demo-token-only deployment would not establish the mandatory MUSD/MEZO integration.
 
 ## Known limitations
 

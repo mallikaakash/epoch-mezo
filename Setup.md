@@ -84,8 +84,9 @@ The `.env.example` is a reference only; it contains no secrets. The UI currently
 - [x] Foundry contract lifecycle tests and ABI export.
 - [x] Next.js wallet and contract console with chain reads and wallet-signed writes; local production build passes.
 - [ ] Owner connects a wallet, completes faucet CAPTCHA, and obtains test funds.
-- [ ] Deploy and verify the contracts on Mezo testnet with official testnet MUSD; use a signer controlled by the project owner.
+- [ ] Deploy and verify the contracts on Mezo testnet with official testnet MEZO or MUSD; use a signer controlled by the project owner. The MetaMask deployment screen is at `/deploy`.
 - [ ] Implement and test that workflow, deploy it publicly on Mezo testnet, and collect explorer links/transaction evidence.
-- [ ] Publish a public GitHub repo and live frontend, prepare the deck and two-minute video, and submit through AKINDO before the deadline.
+- [x] Publish the [public GitHub repo](https://github.com/mallikaakash/epoch-mezo).
+- [ ] Publish a live frontend, prepare the deck and two-minute video, and submit through AKINDO before the deadline.
 
 No Epoch contract or frontend has been deployed publicly yet. No Epoch token transaction has been executed or verified. Local passing tests alone **do not satisfy** AKINDO's integration and deployment requirements. See [README.md](./README.md) for precise progress and mock boundaries.

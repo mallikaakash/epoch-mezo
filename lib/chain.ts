@@ -17,3 +17,12 @@ export const addresses = {
   token: process.env.NEXT_PUBLIC_QUOTE_TOKEN_ADDRESS as `0x${string}` | undefined,
 };
 export const economicMode = process.env.NEXT_PUBLIC_ECONOMIC_MODE || 'OFFICIAL_TESTNET_MUSD';
+
+export type DeploymentAddresses = typeof addresses;
+export function readLocalDeployment(): DeploymentAddresses | undefined {
+  if (typeof window === 'undefined') return undefined;
+  try {
+    const saved = JSON.parse(localStorage.getItem('epoch-lite-deployment-v1') || 'null');
+    return saved?.chainId === mezoTestnet.id ? saved.addresses as DeploymentAddresses : undefined;
+  } catch { return undefined; }
+}

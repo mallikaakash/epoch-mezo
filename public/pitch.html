@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EPOCH — Future Bitcoin Revenue Markets</title>
 <style>
+.lite-disclosure{position:fixed;top:0;left:0;right:0;z-index:1000;padding:9px 16px;text-align:center;background:#392a15;color:#ffe2a7;font:700 12px/1.3 system-ui,sans-serif;letter-spacing:.02em}
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
   :root {
@@ -505,6 +506,7 @@
 </style>
 </head>
 <body>
+<div class="lite-disclosure">EPOCH LITE STATUS: local prototype only. Position and rewards are simulated; no live veBTC, real Mezo fees, or public testnet deployment yet.</div>
 
 <!-- SVG Defs for sketch effects -->
 <svg width="0" height="0" style="position:absolute">
@@ -547,10 +549,10 @@
       Sell future<br><span class="text-btc">Bitcoin revenue.</span><br>Keep the principal.
     </h1>
     <p class="hero-sub animate-in delay-2">
-      Epoch is a marketplace for dated revenue rights on Mezo. Separate the yield from the position. Trade future fee claims for MUSD today.
+      Epoch's vision is a marketplace for dated revenue rights on Mezo. Epoch Lite currently proves the rights split with a mock position and mock reward source.
     </p>
     <div class="hero-tagline animate-in delay-3">
-      A veBTC holder sells next week's fee entitlement for <span class="text-musd">8 MUSD</span> today. The buyer redeems <span class="text-btc">12 MUSD</span> of realized rewards after the epoch. The BTC never leaves the seller's custody chain.
+      Illustrative Lite flow: a holder of a mock position sells a simulated two-minute reward claim for <span class="text-musd">8 test tokens</span>. The mock operator funds <span class="text-btc">12 test tokens</span> for the claim holder. No actual BTC or veBTC is escrowed.
     </div>
     <div class="cta-bar animate-in delay-4">
       <a href="#problem" class="cta-btn cta-primary">See How It Works</a>
@@ -566,7 +568,7 @@
     <h3>The Problem</h3>
     <h2>Bitcoin positions lock <span class="text-red">everything</span> together</h2>
     <p>
-      A productive BTC position bundles principal, governance votes, and fee entitlements into one inseparable unit. Today, unlocking liquidity means selling BTC or taking on debt.
+      A productive BTC position can bundle principal, governance votes, and fee entitlements into one unit. Holders seeking liquidity often sell assets or borrow; the future Epoch protocol explores a different route.
     </p>
 
     <table class="comparison-table" style="margin-top: 40px;">
@@ -628,11 +630,11 @@
     <div class="card-grid" style="margin-top: 32px;">
       <div class="card" style="border-left: 3px solid var(--accent);">
         <h4 class="text-btc" style="margin-bottom: 8px;">Principal Exposure</h4>
-        <p style="font-size: 0.95rem;">Ownership and future return of BTC locked in the underlying position. The seller always retains this.</p>
+        <p style="font-size: 0.95rem;">In the long-term design, the seller retains the right to recover the underlying position. Lite demonstrates this with a mock NFT only.</p>
       </div>
       <div class="card" style="border-left: 3px solid var(--claim);">
         <h4 class="text-claim" style="margin-bottom: 8px;">Revenue Exposure</h4>
-        <p style="font-size: 0.95rem;">Entitlement to fees produced by the position in a specific future epoch. This is what gets traded.</p>
+        <p style="font-size: 0.95rem;">Lite trades a claim on the amount deposited by a mock operator for one simulated epoch. Real fee attribution remains research.</p>
       </div>
     </div>
 
@@ -640,27 +642,27 @@
       <div class="flow-step">
         <div class="flow-num">1</div>
         <h4>Escrow</h4>
-        <p>Alice deposits her veBTC position NFT into the vault</p>
+        <p>Alice deposits a mock position NFT into EpochMarket</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">2</div>
         <h4>List</h4>
-        <p>She lists one epoch's reward claim for a fixed MUSD price</p>
+        <p>She lists one simulated epoch claim at a fixed test-token price</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">3</div>
         <h4>Purchase</h4>
-        <p>Bob pays MUSD and receives a transferable claim NFT</p>
+        <p>Bob pays the configured test token and receives a transferable claim NFT</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">4</div>
         <h4>Settle</h4>
-        <p>After the epoch, rewards are finalized onchain</p>
+        <p>After the simulated epoch, the operator-funded reward is finalized onchain</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">5</div>
         <h4>Redeem</h4>
-        <p>Claim holder redeems actual rewards. Alice recovers her BTC.</p>
+        <p>Claim holder redeems the funded amount. Alice recovers her original mock NFT.</p>
       </div>
     </div>
   </div>
@@ -671,7 +673,7 @@
   <div class="grid-bg"></div>
   <div class="slide-inner">
     <h3>Architecture</h3>
-    <h2>Hand-drawn system overview</h2>
+    <h2>Long-term system vision</h2>
 
     <svg viewBox="0 0 900 520" style="width:100%; max-width:900px; margin-top: 20px;" xmlns="http://www.w3.org/2000/svg">
 
@@ -836,8 +838,8 @@
 <section class="slide" id="example">
   <div class="grid-bg"></div>
   <div class="slide-inner">
-    <h3>Live Example</h3>
-    <h2>Concrete numbers, <span class="text-musd">real settlement</span></h2>
+    <h3>Illustrative Example</h3>
+    <h2>Concrete numbers, <span class="text-musd">simulated source</span></h2>
 
     <div class="card-grid">
       <!-- Winning scenario -->
@@ -849,22 +851,22 @@
             <div class="mono" style="color: var(--text-dim);">position (mock)</div>
           </div>
           <div>
-            <div class="mono text-musd" style="font-size: 1.6rem; font-weight: 700;">8 MUSD</div>
+            <div class="mono text-musd" style="font-size: 1.6rem; font-weight: 700;">8 demo tokens</div>
             <div class="mono" style="color: var(--text-dim);">forward price</div>
           </div>
         </div>
         <div style="background: var(--surface2); border-radius: 10px; padding: 16px; margin-bottom: 12px;">
           <div class="mono" style="margin-bottom: 6px; color: var(--text-dim);">Epoch ends. Realized reward:</div>
-          <div class="mono text-musd" style="font-size: 1.8rem; font-weight: 700;">12 MUSD</div>
+          <div class="mono text-musd" style="font-size: 1.8rem; font-weight: 700;">12 demo tokens</div>
         </div>
         <table style="width:100%; font-size: 0.85rem;">
           <tr>
             <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Alice (seller)</td>
-            <td class="mono text-musd" style="text-align:right;">+8 MUSD + BTC back</td>
+            <td class="mono text-musd" style="text-align:right;">+8 demo tokens + mock NFT back</td>
           </tr>
           <tr>
             <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Bob (buyer)</td>
-            <td class="mono text-musd" style="text-align:right;">+12 - 8 = +4 MUSD</td>
+            <td class="mono text-musd" style="text-align:right;">+12 - 8 = +4 demo tokens</td>
           </tr>
         </table>
       </div>
@@ -878,22 +880,22 @@
             <div class="mono" style="color: var(--text-dim);">position (mock)</div>
           </div>
           <div>
-            <div class="mono text-musd" style="font-size: 1.6rem; font-weight: 700;">8 MUSD</div>
+            <div class="mono text-musd" style="font-size: 1.6rem; font-weight: 700;">8 demo tokens</div>
             <div class="mono" style="color: var(--text-dim);">forward price</div>
           </div>
         </div>
         <div style="background: var(--surface2); border-radius: 10px; padding: 16px; margin-bottom: 12px;">
           <div class="mono" style="margin-bottom: 6px; color: var(--text-dim);">Epoch ends. Realized reward:</div>
-          <div class="mono text-red" style="font-size: 1.8rem; font-weight: 700;">3 MUSD</div>
+          <div class="mono text-red" style="font-size: 1.8rem; font-weight: 700;">3 demo tokens</div>
         </div>
         <table style="width:100%; font-size: 0.85rem;">
           <tr>
             <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Alice (seller)</td>
-            <td class="mono text-musd" style="text-align:right;">+8 MUSD + BTC back</td>
+            <td class="mono text-musd" style="text-align:right;">+8 demo tokens + mock NFT back</td>
           </tr>
           <tr>
             <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Bob (buyer)</td>
-            <td class="mono text-red" style="text-align:right;">+3 - 8 = -5 MUSD</td>
+            <td class="mono text-red" style="text-align:right;">+3 - 8 = -5 demo tokens</td>
           </tr>
         </table>
       </div>
@@ -907,29 +909,29 @@
             <div class="mono" style="color: var(--text-dim);">position (mock)</div>
           </div>
           <div>
-            <div class="mono text-musd" style="font-size: 1.6rem; font-weight: 700;">8 MUSD</div>
+            <div class="mono text-musd" style="font-size: 1.6rem; font-weight: 700;">8 demo tokens</div>
             <div class="mono" style="color: var(--text-dim);">forward price</div>
           </div>
         </div>
         <div style="background: var(--surface2); border-radius: 10px; padding: 16px; margin-bottom: 12px;">
           <div class="mono" style="margin-bottom: 6px; color: var(--text-dim);">Epoch ends. Realized reward:</div>
-          <div class="mono" style="font-size: 1.8rem; font-weight: 700; color: var(--text-dim);">0 MUSD</div>
+          <div class="mono" style="font-size: 1.8rem; font-weight: 700; color: var(--text-dim);">0 demo tokens</div>
         </div>
         <table style="width:100%; font-size: 0.85rem;">
           <tr>
             <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Alice (seller)</td>
-            <td class="mono text-musd" style="text-align:right;">+8 MUSD + BTC back</td>
+            <td class="mono text-musd" style="text-align:right;">+8 demo tokens + mock NFT back</td>
           </tr>
           <tr>
             <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Bob (buyer)</td>
-            <td class="mono text-red" style="text-align:right;">0 - 8 = -8 MUSD</td>
+            <td class="mono text-red" style="text-align:right;">0 - 8 = -8 demo tokens</td>
           </tr>
         </table>
       </div>
     </div>
 
     <p style="margin-top: 24px; font-size: 0.85rem; font-style: italic;">
-      All values are demonstration fixtures on Mezo testnet. No guaranteed returns. Buyer bears full downside risk on the purchased claim.
+      These amounts are hypothetical test-token fixtures. The 8/12 flow passed on local Anvil with DEMO-USD; no equivalent Mezo testnet transaction has been executed. No guaranteed returns.
     </p>
   </div>
 </section>
@@ -939,59 +941,59 @@
   <div class="grid-bg"></div>
   <div class="slide-inner">
     <h3>Differentiation</h3>
-    <h2>Not Pendle. Not lending. <span class="text-btc">Something new.</span></h2>
+    <h2>How the proposed rights split <span class="text-btc">differs in design</span></h2>
 
     <table class="comparison-table">
       <thead>
         <tr>
           <th>Dimension</th>
-          <th class="text-btc">Epoch</th>
-          <th>Pendle</th>
-          <th>Borrowing</th>
+          <th class="text-btc">Epoch Lite now</th>
+          <th>Future Epoch research</th>
+          <th>BTC-backed borrowing</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Yield model</td>
-          <td>Discrete epoch fee claims</td>
-          <td>Continuous yield stream</td>
-          <td>N/A (debt)</td>
+          <td>Unit of exposure</td>
+          <td>One simulated-period claim</td>
+          <td>One verified real fee epoch, if feasible</td>
+          <td>Debt against collateral</td>
         </tr>
         <tr>
-          <td>Revenue source</td>
-          <td>Source-specific (gauge, passive, etc.)</td>
-          <td>Undifferentiated yield</td>
-          <td>N/A</td>
+          <td>Reward source</td>
+          <td>Operator-funded mock source</td>
+          <td>Real Mezo fee source; unverified adapter</td>
+          <td>Not a reward purchase</td>
         </tr>
         <tr>
-          <td>Principal risk</td>
-          <td class="check">Never leaves seller</td>
-          <td class="partial">Split into PT</td>
-          <td class="cross">Liquidation risk</td>
+          <td>Principal</td>
+          <td>Original mock NFT returned to seller</td>
+          <td>Return of real position is a research gate</td>
+          <td>Collateral may be liquidated</td>
         </tr>
         <tr>
           <td>Debt created</td>
           <td class="check">No</td>
-          <td class="check">No</td>
+          <td class="check">Proposed: no</td>
           <td class="cross">Yes</td>
         </tr>
         <tr>
-          <td>Bitcoin-native</td>
-          <td class="check">Yes (Mezo veBTC)</td>
-          <td class="partial">Some BTC assets</td>
-          <td class="partial">Varies</td>
+          <td>Mezo integration</td>
+          <td>Testnet token settlement pending</td>
+          <td>Real veBTC adapter not proven</td>
+          <td>Existing MUSD borrowing flow</td>
         </tr>
         <tr>
           <td>Settlement</td>
-          <td>In-kind, per epoch</td>
-          <td>At maturity</td>
+          <td>Onchain mock amount after simulated end</td>
+          <td>Would require isolated actual rewards</td>
           <td>Ongoing repayment</td>
         </tr>
         <tr>
-          <td>Forward curve</td>
-          <td class="check">Per-epoch price discovery</td>
-          <td class="check">Implied rate</td>
-          <td class="cross">No</td>
+          <td>Price discovery</td>
+          <td>One fixed ask; no market curve</td>
+          <td>Potential multi-epoch market later</td>
+          <td>Interest rate</td>
         </tr>
       </tbody>
     </table>
@@ -1000,17 +1002,17 @@
       <div class="card">
         <div class="persona-icon persona-alice">A</div>
         <h4>For Alice <span class="text-btc">(Seller)</span></h4>
-        <p style="font-size:0.9rem;">Get MUSD today without selling BTC or creating debt. Keep your position. Forfeit only one epoch of uncertain fees.</p>
+        <p style="font-size:0.9rem;">Future vision: receive MUSD without a new loan while retaining the right to recover the position. Lite proves the split with a mock NFT only.</p>
       </div>
       <div class="card">
         <div class="persona-icon persona-bob">B</div>
         <h4>For Bob <span class="text-claim">(Buyer)</span></h4>
-        <p style="font-size:0.9rem;">Get exposure to Mezo network activity without locking BTC. Speculate on fee volume for a specific epoch.</p>
+        <p style="font-size:0.9rem;">Future vision: buy exposure to an actual fee epoch without locking BTC. Lite's reward is operator-funded and simulated.</p>
       </div>
       <div class="card">
         <div class="persona-icon persona-market">M</div>
         <h4>For <span class="text-musd">Mezo</span></h4>
-        <p style="font-size:0.9rem;">Discover market prices for fee streams. Build a forward curve. Attract capital that wants revenue exposure, not just BTC beta.</p>
+        <p style="font-size:0.9rem;">Future possibility: price discovery for fee streams, contingent on a verified reward adapter and real buyer demand.</p>
       </div>
     </div>
   </div>
@@ -1036,11 +1038,11 @@
       <div class="card">
         <h4 style="margin-bottom:12px;">Stack</h4>
         <ul style="list-style:none; font-size: 0.9rem; color: var(--text-dim);">
-          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><strong>Chain:</strong> Mezo testnet (31611)</li>
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><strong>Chain target:</strong> Mezo testnet (31611); not deployed yet</li>
           <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><strong>Language:</strong> Solidity ^0.8.24</li>
           <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><strong>Framework:</strong> Foundry (forge, cast, anvil)</li>
           <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><strong>Frontend:</strong> Next.js + wagmi + viem</li>
-          <li style="padding: 6px 0;"><strong>Settlement:</strong> MUSD (testnet) or labeled demo ERC-20</li>
+          <li style="padding: 6px 0;"><strong>Settlement target:</strong> official testnet MUSD or MEZO; local demo uses DEMO-USD, not MUSD</li>
         </ul>
       </div>
       <div class="card">
@@ -1048,21 +1050,21 @@
         <ul style="list-style:none; font-size: 0.9rem; color: var(--text-dim);">
           <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">Buyer can <strong>never</strong> access principal</li>
           <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">Beneficiary is immutable after escrow</li>
-          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">Atomic buy: MUSD + claim mint or revert</li>
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">Atomic buy: configured ERC-20 payment + claim mint or revert</li>
           <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">Rewards attributed and redeemed at most once</li>
-          <li style="padding: 6px 0;">25 mandatory test cases in Foundry</li>
+          <li style="padding: 6px 0;">13 passing Foundry tests, including a 256-run reward fuzz check</li>
         </ul>
       </div>
     </div>
 
     <div class="stat-row" style="justify-content: center;">
       <div class="stat">
-        <div class="stat-value text-btc">25</div>
-        <div class="stat-label">test cases</div>
+        <div class="stat-value text-btc">13</div>
+        <div class="stat-label">passing tests</div>
       </div>
       <div class="stat">
-        <div class="stat-value text-musd">15</div>
-        <div class="stat-label">invariants</div>
+        <div class="stat-value text-musd">256</div>
+        <div class="stat-label">fuzz runs</div>
       </div>
       <div class="stat">
         <div class="stat-value text-claim">6</div>
@@ -1070,7 +1072,7 @@
       </div>
       <div class="stat">
         <div class="stat-value" style="color: var(--text);">0</div>
-        <div class="stat-label">admin keys over funds</div>
+        <div class="stat-label">admin principal seizure paths</div>
       </div>
     </div>
   </div>
@@ -1089,7 +1091,7 @@
           <div class="timeline-item">
             <div class="timeline-phase">Phase 0 — Epoch Lite (now)</div>
             <h4>Proof of rights separation</h4>
-            <p style="font-size: 0.9rem;">Mock NFT escrow, fixed-price MUSD sale, simulated reward settlement, principal return. Testnet demo with real ERC-20 transfers.</p>
+            <p style="font-size: 0.9rem;">Mock NFT escrow, fixed-price demo-token sale, operator-funded reward settlement, and principal return passed locally. Mezo testnet deployment remains.</p>
           </div>
           <div class="timeline-item">
             <div class="timeline-phase">Phase 1 — Live source feasibility</div>
@@ -1164,11 +1166,10 @@
 
     <div class="cta-bar" style="justify-content: center; margin-top: 48px;">
       <a href="#hero" class="cta-btn cta-primary">Back to Top</a>
-      <a class="cta-btn cta-secondary" href="https://github.com/" target="_blank">GitHub Repo</a>
     </div>
 
     <p style="margin: 40px auto 0; font-size: 0.8rem; color: var(--sketch);">
-      Built for Mezo Buildathon Wave 1 &middot; October 2026 &middot; Testnet only &middot; Not audited
+      Epoch Lite local prototype &middot; October 2026 &middot; Public deployment pending &middot; Not audited
     </p>
   </div>
 </section>

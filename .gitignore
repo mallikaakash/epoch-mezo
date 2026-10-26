@@ -4,8 +4,10 @@
 node_modules/
 .next/
 .env.local
+*.tsbuildinfo
 out/
 cache/
 broadcast/
 *.log
 .DS_Store
+.vercel

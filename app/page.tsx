@@ -6,7 +6,7 @@ import { useAccount, useConnect, useDisconnect, useSwitchChain, useWriteContract
 import Image from 'next/image';
 import abis from '../lib/abis.json';
 import emblem from '../Epoch Fintech Emblem.png';
-import { addresses, economicMode, mezoTestnet } from '../lib/chain';
+import { addresses as envAddresses, economicMode, mezoTestnet, readLocalDeployment } from '../lib/chain';
 
 const client = createPublicClient({ chain: mezoTestnet, transport: http() });
 const marketAbi = abis.EpochMarket as Abi;
@@ -23,6 +23,8 @@ function date(seconds: bigint) { return new Date(Number(seconds) * 1000).toLocal
 function link(address?: string) { return address ? `${mezoTestnet.blockExplorers.default.url}/address/${address}` : '#'; }
 
 export default function Home() {
+  const [addresses, setAddresses] = useState(envAddresses);
+  useEffect(() => { setAddresses(readLocalDeployment() || envAddresses); }, []);
   const { address, chainId, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
@@ -93,13 +95,13 @@ export default function Home() {
     const now = BigInt(Math.floor(Date.now() / 1000));
     await send(addresses.market!, marketAbi, 'createOffer', [id, now + 120n, now + 240n, parseUnits(price, decimals)], 'Create simulated offer');
   }
-  const asset = economicMode === 'DEMO_ERC20' ? 'DEMO-USD (NOT MUSD)' : economicMode === 'REAL_TESTNET_MEZO' ? 'testnet MEZO' : 'testnet MUSD';
+  const asset = economicMode === 'DEMO_ERC20' ? 'DEMO-USD (NOT MUSD)' : addresses.token?.toLowerCase() === '0x7b7c000000000000000000000000000000000001' || economicMode === 'REAL_TESTNET_MEZO' ? 'testnet MEZO' : 'testnet MUSD';
   const canWrite = Boolean(isConnected && correctChain && configured);
 
   return <main>
     <div className="top"><div className="logo">EPOCH<span style={{ color: '#b7e68b' }}> / LITE</span></div><div><span className="tag">MEZO TESTNET · 31611</span><span className="tag warn">SIMULATED POSITION & REWARDS</span><span className="tag">{asset}</span></div></div>
     <section className="hero"><div className="hero-layout"><div><div className="eyebrow">A PROOF OF FUTURE FEE RIGHTS</div><h1>Sell future Bitcoin revenue without selling the principal.</h1><p>Epoch Lite tests the separation of principal and one future reward claim. The position and reward source are simulated; payment and redemption use onchain test tokens.</p></div><Image className="emblem" src={emblem} alt="Epoch emblem" priority /></div><div className="steps"><div className="step"><strong>01 / Escrow</strong><p>Seller deposits a mock position NFT.</p></div><div className="step"><strong>02 / Buy</strong><p>Buyer pays for a transferable claim.</p></div><div className="step"><strong>03 / Redeem</strong><p>Current claim holder receives the amount actually funded.</p></div></div></section>
-    {!configured && <div className="card risk"><h2>Contracts are not deployed</h2><p>Set the five <code>NEXT_PUBLIC_…_ADDRESS</code> variables after a verified Mezo testnet deployment. The interface will then read live contract state.</p></div>}
+    {!configured && <div className="card risk"><h2>Contracts are not deployed</h2><p>Deploy on Mezo testnet with your own wallet at <a href="/deploy">/deploy</a>, or set the five <code>NEXT_PUBLIC_…_ADDRESS</code> variables after a verified deployment.</p></div>}
     <div className="grid"><section className="card"><h2>Wallet</h2>{!isConnected ? <button onClick={() => connect({ connector: connectors[0] })}>Connect EVM wallet</button> : <><p>{short(address)} · {correctChain ? 'Mezo testnet' : `wrong chain ${chainId}`}</p>{!correctChain && <button onClick={() => switchChain({ chainId: mezoTestnet.id })}>Switch to Mezo testnet</button>}<button className="secondary" onClick={() => disconnect()}>Disconnect</button><p>BTC gas: {formatUnits(btc, 18)} · {asset}: {formatUnits(tokenBalance, decimals)}</p></>}<p className="muted">Each write opens a wallet confirmation. No key is stored here.</p></section>
     <section className="card"><h2>Deployment</h2><dl><dt>Market</dt><dd><a href={link(addresses.market)} target="_blank">{short(addresses.market)}</a></dd><dt>Claim NFT</dt><dd><a href={link(addresses.claim)} target="_blank">{short(addresses.claim)}</a></dd><dt>Mock position</dt><dd><a href={link(addresses.position)} target="_blank">{short(addresses.position)}</a></dd><dt>Mock source</dt><dd><a href={link(addresses.source)} target="_blank">{short(addresses.source)}</a></dd><dt>Payment token</dt><dd><a href={link(addresses.token)} target="_blank">{short(addresses.token)}</a></dd></dl></section></div>
     <div className="status" role="status" aria-live="polite">{message}{tx && <> <a href={`${mezoTestnet.blockExplorers.default.url}/tx/${tx}`} target="_blank">View transaction ↗</a></>}</div>

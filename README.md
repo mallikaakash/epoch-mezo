@@ -4,6 +4,20 @@ Epoch Lite is a **Mezo testnet proof of rights separation**: a seller escrows a 
 
 **Nothing here escrows actual BTC, controls a real veBTC position, or collects real Mezo fees.** The 0.10 BTC position, two-minute epoch, 8-token sale, and 12-token reward are demonstration fixtures. The buyer can receive zero and lose the full purchase price. No return is promised.
 
+## Verified Mezo testnet deployment
+
+Chain ID **31611**. The four Epoch contracts have deployed code, the claim and mock reward source are linked to the market, and the market references the official testnet MEZO token. Verified on 26 October 2026. The mock trade lifecycle still needs an onchain purchase and settlement trace.
+
+| Contract | Address and explorer |
+| --- | --- |
+| EpochMarket | [`0x111f7DBd762e8b7d58eC6d2687a61446300B40EF`](https://explorer.test.mezo.org/address/0x111f7DBd762e8b7d58eC6d2687a61446300B40EF) |
+| EpochClaim NFT | [`0xdb603d247523d337cE145aA5d191B84B33a0f3DE`](https://explorer.test.mezo.org/address/0xdb603d247523d337cE145aA5d191B84B33a0f3DE) |
+| MockVeBTC position NFT | [`0x093F755a9E5bD86d8E7e480Ea693CfadA578B094`](https://explorer.test.mezo.org/address/0x093F755a9E5bD86d8E7e480Ea693CfadA578B094) |
+| MockRewardSource | [`0x02F71a3CBE00258f924c76a31640F711F9F03218`](https://explorer.test.mezo.org/address/0x02F71a3CBE00258f924c76a31640F711F9F03218) |
+| Official testnet MEZO payment token | [`0x7B7c000000000000000000000000000000000001`](https://explorer.test.mezo.org/address/0x7B7c000000000000000000000000000000000001) |
+
+[Live app](https://mezo-buildathon.vercel.app/) · [Draft pitch deck](https://mezo-buildathon.vercel.app/pitch.html) · [Machine-readable deployment manifest](./deployments/mezo-testnet.json)
+
 ## Current progress (26 October 2026)
 
 | Area | Status |

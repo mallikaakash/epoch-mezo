@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPOCH — Future Bitcoin Revenue Markets</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a28;
+    --border: #2a2a3d;
+    --text: #e8e8f0;
+    --text-dim: #8888a8;
+    --accent: #f7931a;
+    --accent2: #ff6b2b;
+    --musd: #00d4aa;
+    --claim: #7b61ff;
+    --red: #ff4d6a;
+    --sketch: #5a5a7a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* --- Slide system --- */
+  .slide {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 40px;
+    position: relative;
+  }
+
+  .slide-inner {
+    max-width: 1100px;
+    width: 100%;
+  }
+
+  /* --- Navigation dots --- */
+  .nav-dots {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 100;
+  }
+  .nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 1.5px solid var(--sketch);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .nav-dot:hover, .nav-dot.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.3);
+  }
+
+  /* --- Typography --- */
+  h1 {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 32px;
+  }
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-family: 'Space Mono', monospace;
+  }
+  p {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 640px;
+    line-height: 1.7;
+  }
+  .mono {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  /* --- Accent text --- */
+  .text-btc { color: var(--accent); }
+  .text-musd { color: var(--musd); }
+  .text-claim { color: var(--claim); }
+  .text-red { color: var(--red); }
+
+  /* --- Badges --- */
+  .badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+  }
+  .badge-btc { background: rgba(247,147,26,0.15); color: var(--accent); border: 1px solid rgba(247,147,26,0.3); }
+  .badge-mezo { background: rgba(0,212,170,0.1); color: var(--musd); border: 1px solid rgba(0,212,170,0.25); }
+  .badge-defi { background: rgba(123,97,255,0.1); color: var(--claim); border: 1px solid rgba(123,97,255,0.25); }
+
+  /* --- Cards --- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  /* --- Sketch / hand-drawn lines --- */
+  .sketch-line {
+    stroke: var(--sketch);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 6 4;
+    fill: none;
+    filter: url(#roughness);
+  }
+  .sketch-box {
+    stroke: var(--sketch);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: var(--surface);
+    rx: 12;
+    filter: url(#roughness);
+  }
+  .sketch-box-accent {
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    fill: rgba(247,147,26,0.06);
+    rx: 12;
+    filter: url(#roughness);
+  }
+  .sketch-box-musd {
+    stroke: var(--musd);
+    stroke-width: 2;
+    fill: rgba(0,212,170,0.04);
+    rx: 12;
+    filter: url(#roughness);
+  }
+  .sketch-box-claim {
+    stroke: var(--claim);
+    stroke-width: 2;
+    fill: rgba(123,97,255,0.04);
+    rx: 12;
+    filter: url(#roughness);
+  }
+  .sketch-arrow {
+    stroke: var(--text-dim);
+    stroke-width: 2;
+    stroke-linecap: round;
+    fill: none;
+    marker-end: url(#arrowhead);
+    filter: url(#roughness);
+  }
+  .sketch-arrow-btc {
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    fill: none;
+    marker-end: url(#arrowhead-btc);
+    filter: url(#roughness);
+  }
+  .sketch-arrow-musd {
+    stroke: var(--musd);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    fill: none;
+    marker-end: url(#arrowhead-musd);
+    filter: url(#roughness);
+  }
+  .sketch-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    fill: var(--text);
+  }
+  .sketch-text-dim {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    fill: var(--text-dim);
+  }
+  .sketch-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    fill: var(--text);
+  }
+
+  /* --- Hero specific --- */
+  .hero-sub {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: var(--text-dim);
+    margin-top: 20px;
+    max-width: 600px;
+    font-weight: 300;
+  }
+  .hero-badges {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .hero-tagline {
+    margin-top: 48px;
+    padding: 20px 28px;
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    font-size: 1.15rem;
+    color: var(--text);
+    max-width: 700px;
+    font-weight: 400;
+  }
+
+  /* --- Flow steps --- */
+  .flow-steps {
+    display: flex;
+    gap: 0;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 180px;
+    max-width: 220px;
+    text-align: center;
+    padding: 24px 16px;
+    position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    width: 24px;
+    height: 2px;
+    background: var(--border);
+    border-top: 2px dashed var(--sketch);
+  }
+  .flow-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--accent);
+  }
+  .flow-step h4 {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+  .flow-step p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  /* --- Table --- */
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 0.9rem;
+  }
+  .comparison-table th {
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 2px solid var(--border);
+    color: var(--text-dim);
+    font-weight: 500;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .comparison-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .comparison-table tr:hover td {
+    background: var(--surface);
+  }
+  .check { color: var(--musd); }
+  .cross { color: var(--red); opacity: 0.7; }
+  .partial { color: var(--accent); }
+
+  /* --- Persona cards --- */
+  .persona-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+  .persona-alice { background: rgba(247,147,26,0.15); }
+  .persona-bob { background: rgba(123,97,255,0.15); }
+  .persona-market { background: rgba(0,212,170,0.15); }
+
+  /* --- Timeline --- */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+    margin-top: 32px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--claim), var(--musd));
+    border-radius: 2px;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 28px;
+    padding-left: 24px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -33px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+  }
+  .timeline-item:nth-child(2)::before { border-color: var(--claim); }
+  .timeline-item:nth-child(3)::before { border-color: var(--musd); }
+  .timeline-item:nth-child(4)::before { border-color: var(--accent2); }
+  .timeline-phase {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .timeline-item:nth-child(2) .timeline-phase { color: var(--claim); }
+  .timeline-item:nth-child(3) .timeline-phase { color: var(--musd); }
+  .timeline-item:nth-child(4) .timeline-phase { color: var(--accent2); }
+
+  /* --- Stat row --- */
+  .stat-row {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* --- Footer / CTA --- */
+  .cta-bar {
+    display: flex;
+    gap: 16px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .cta-btn {
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+  }
+  .cta-primary {
+    background: var(--accent);
+    color: #000;
+  }
+  .cta-primary:hover {
+    background: var(--accent2);
+    transform: translateY(-2px);
+  }
+  .cta-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+  }
+  .cta-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* --- Subtle grid bg --- */
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  /* --- Glow --- */
+  .glow-btc {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(247,147,26,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* --- Animations --- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in {
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  .delay-3 { animation-delay: 0.45s; }
+  .delay-4 { animation-delay: 0.6s; }
+
+  /* --- Responsive --- */
+  @media (max-width: 768px) {
+    .slide { padding: 40px 20px; }
+    .flow-step:not(:last-child)::after { display: none; }
+    .flow-steps { flex-direction: column; align-items: center; }
+    .nav-dots { right: 12px; }
+    .stat-row { gap: 24px; }
+    .comparison-table { font-size: 0.8rem; }
+    .comparison-table th, .comparison-table td { padding: 10px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SVG Defs for sketch effects -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="roughness">
+      <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="4" result="noise" seed="2"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8888a8"/>
+    </marker>
+    <marker id="arrowhead-btc" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f7931a"/>
+    </marker>
+    <marker id="arrowhead-musd" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#00d4aa"/>
+    </marker>
+    <marker id="arrowhead-claim" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7b61ff"/>
+    </marker>
+  </defs>
+</svg>
+
+<!-- Nav dots -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- ========== SLIDE 1: HERO ========== -->
+<section class="slide" id="hero">
+  <div class="grid-bg"></div>
+  <div class="glow-btc" style="top: -100px; left: -100px;"></div>
+  <div class="slide-inner">
+    <div class="animate-in">
+      <div class="hero-badges">
+        <span class="badge badge-btc">Bitcoin-Native</span>
+        <span class="badge badge-mezo">Mezo Ecosystem</span>
+        <span class="badge badge-defi">DeFi Primitive</span>
+      </div>
+    </div>
+    <h1 class="animate-in delay-1" style="margin-top: 28px;">
+      Sell future<br><span class="text-btc">Bitcoin revenue.</span><br>Keep the principal.
+    </h1>
+    <p class="hero-sub animate-in delay-2">
+      Epoch is a marketplace for dated revenue rights on Mezo. Separate the yield from the position. Trade future fee claims for MUSD today.
+    </p>
+    <div class="hero-tagline animate-in delay-3">
+      A veBTC holder sells next week's fee entitlement for <span class="text-musd">8 MUSD</span> today. The buyer redeems <span class="text-btc">12 MUSD</span> of realized rewards after the epoch. The BTC never leaves the seller's custody chain.
+    </div>
+    <div class="cta-bar animate-in delay-4">
+      <a href="#problem" class="cta-btn cta-primary">See How It Works</a>
+      <a href="#architecture" class="cta-btn cta-secondary">View Architecture</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SLIDE 2: PROBLEM ========== -->
+<section class="slide" id="problem">
+  <div class="grid-bg"></div>
+  <div class="slide-inner">
+    <h3>The Problem</h3>
+    <h2>Bitcoin positions lock <span class="text-red">everything</span> together</h2>
+    <p>
+      A productive BTC position bundles principal, governance votes, and fee entitlements into one inseparable unit. Today, unlocking liquidity means selling BTC or taking on debt.
+    </p>
+
+    <table class="comparison-table" style="margin-top: 40px;">
+      <thead>
+        <tr>
+          <th>Choice</th>
+          <th>Liquidity Now</th>
+          <th>Keep BTC</th>
+          <th>No Debt</th>
+          <th>No Liquidation Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sell BTC</td>
+          <td class="check">Yes</td>
+          <td class="cross">No</td>
+          <td class="check">Yes</td>
+          <td class="check">Yes</td>
+        </tr>
+        <tr>
+          <td>Borrow MUSD</td>
+          <td class="check">Yes</td>
+          <td class="check">Yes</td>
+          <td class="cross">No</td>
+          <td class="cross">No</td>
+        </tr>
+        <tr>
+          <td>Hold & wait</td>
+          <td class="cross">No</td>
+          <td class="check">Yes</td>
+          <td class="check">Yes</td>
+          <td class="check">Yes</td>
+        </tr>
+        <tr style="background: rgba(247,147,26,0.05);">
+          <td><strong class="text-btc">Epoch</strong></td>
+          <td class="check">Yes</td>
+          <td class="check">Yes</td>
+          <td class="check">Yes</td>
+          <td class="check">Yes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 24px; font-size: 0.9rem;">
+      <span class="text-btc">Epoch's trade-off:</span> the seller gives up uncertain future fee income in exchange for certain MUSD today. No debt. No liquidation. No principal sale.
+    </p>
+  </div>
+</section>
+
+<!-- ========== SLIDE 3: HOW IT WORKS ========== -->
+<section class="slide" id="mechanism">
+  <div class="grid-bg"></div>
+  <div class="slide-inner">
+    <h3>The Mechanism</h3>
+    <h2>Revenue rights as a <span class="text-claim">tradeable primitive</span></h2>
+    <p>Epoch separates two independent economic exposures from one position:</p>
+
+    <div class="card-grid" style="margin-top: 32px;">
+      <div class="card" style="border-left: 3px solid var(--accent);">
+        <h4 class="text-btc" style="margin-bottom: 8px;">Principal Exposure</h4>
+        <p style="font-size: 0.95rem;">Ownership and future return of BTC locked in the underlying position. The seller always retains this.</p>
+      </div>
+      <div class="card" style="border-left: 3px solid var(--claim);">
+        <h4 class="text-claim" style="margin-bottom: 8px;">Revenue Exposure</h4>
+        <p style="font-size: 0.95rem;">Entitlement to fees produced by the position in a specific future epoch. This is what gets traded.</p>
+      </div>
+    </div>
+
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <h4>Escrow</h4>
+        <p>Alice deposits her veBTC position NFT into the vault</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <h4>List</h4>
+        <p>She lists one epoch's reward claim for a fixed MUSD price</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <h4>Purchase</h4>
+        <p>Bob pays MUSD and receives a transferable claim NFT</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <h4>Settle</h4>
+        <p>After the epoch, rewards are finalized onchain</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <h4>Redeem</h4>
+        <p>Claim holder redeems actual rewards. Alice recovers her BTC.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SLIDE 4: ARCHITECTURE ========== -->
+<section class="slide" id="architecture">
+  <div class="grid-bg"></div>
+  <div class="slide-inner">
+    <h3>Architecture</h3>
+    <h2>Hand-drawn system overview</h2>
+
+    <svg viewBox="0 0 900 520" style="width:100%; max-width:900px; margin-top: 20px;" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- Alice wallet -->
+      <rect class="sketch-box-accent" x="30" y="20" width="160" height="64" />
+      <text class="sketch-label" x="110" y="48" text-anchor="middle" fill="#f7931a">Alice</text>
+      <text class="sketch-text-dim" x="110" y="64" text-anchor="middle">BTC holder / seller</text>
+
+      <!-- Bob wallet -->
+      <rect class="sketch-box-claim" x="710" y="20" width="160" height="64" />
+      <text class="sketch-label" x="790" y="48" text-anchor="middle" fill="#7b61ff">Bob</text>
+      <text class="sketch-text-dim" x="790" y="64" text-anchor="middle">revenue buyer</text>
+
+      <!-- Arrow: Alice -> Vault (NFT) -->
+      <path class="sketch-arrow-btc" d="M 110 84 L 110 160" />
+      <text class="sketch-text-dim" x="118" y="128" fill="#f7931a">deposit NFT</text>
+
+      <!-- Arrow: Bob -> Market (MUSD) -->
+      <path class="sketch-arrow-musd" d="M 790 84 L 790 160" />
+      <text class="sketch-text-dim" x="798" y="128" fill="#00d4aa">pay MUSD</text>
+
+      <!-- Position Vault -->
+      <rect class="sketch-box-accent" x="20" y="160" width="250" height="130" />
+      <text class="sketch-label" x="145" y="190" text-anchor="middle" fill="#f7931a">PositionVault</text>
+      <line class="sketch-line" x1="40" y1="200" x2="250" y2="200" stroke="#f7931a" opacity="0.3"/>
+      <text class="sketch-text-dim" x="40" y="220">escrow source NFT</text>
+      <text class="sketch-text-dim" x="40" y="238">immutable beneficiary</text>
+      <text class="sketch-text-dim" x="40" y="256">vote restrictions</text>
+      <text class="sketch-text-dim" x="40" y="274">reward collection</text>
+
+      <!-- EpochMarket -->
+      <rect class="sketch-box" x="320" y="160" width="260" height="130" style="stroke: var(--text-dim);" />
+      <text class="sketch-label" x="450" y="190" text-anchor="middle">EpochMarket</text>
+      <line class="sketch-line" x1="340" y1="200" x2="560" y2="200" />
+      <text class="sketch-text-dim" x="340" y="220">fixed price / auction</text>
+      <text class="sketch-text-dim" x="340" y="238">atomic MUSD settlement</text>
+      <text class="sketch-text-dim" x="340" y="256">finalize + redeem</text>
+      <text class="sketch-text-dim" x="340" y="274">principal return</text>
+
+      <!-- Arrow: Vault <-> Market -->
+      <path class="sketch-arrow" d="M 270 225 L 320 225" />
+      <path d="M 320 240 L 270 240" class="sketch-arrow" />
+
+      <!-- RevenueClaim ERC-721 -->
+      <rect class="sketch-box-claim" x="640" y="170" width="230" height="110" />
+      <text class="sketch-label" x="755" y="200" text-anchor="middle" fill="#7b61ff">RevenueClaim</text>
+      <line class="sketch-line" x1="660" y1="210" x2="850" y2="210" stroke="#7b61ff" opacity="0.3"/>
+      <text class="sketch-text-dim" x="660" y="230">ERC-721 dated right</text>
+      <text class="sketch-text-dim" x="660" y="248">transferable before redeem</text>
+      <text class="sketch-text-dim" x="660" y="266">burned on redemption</text>
+
+      <!-- Arrow: Market -> Claim -->
+      <path class="sketch-arrow" d="M 580 210 L 640 210" style="stroke: #7b61ff; marker-end: url(#arrowhead-claim);" />
+      <text class="sketch-text-dim" x="590" y="200" fill="#7b61ff">mint</text>
+
+      <!-- Reward Source Adapter -->
+      <rect class="sketch-box-musd" x="160" y="370" width="260" height="110" />
+      <text class="sketch-label" x="290" y="400" text-anchor="middle" fill="#00d4aa">RewardAdapter</text>
+      <line class="sketch-line" x1="180" y1="410" x2="400" y2="410" stroke="#00d4aa" opacity="0.3"/>
+      <text class="sketch-text-dim" x="180" y="430">source authentication</text>
+      <text class="sketch-text-dim" x="180" y="448">per-epoch measurement</text>
+      <text class="sketch-text-dim" x="180" y="466">settlement in-kind</text>
+
+      <!-- Arrow: Vault -> Adapter -->
+      <path class="sketch-arrow-musd" d="M 145 290 L 240 370" />
+
+      <!-- Arrow: Market -> Adapter -->
+      <path class="sketch-arrow" d="M 400 290 L 340 370" />
+
+      <!-- Mezo source -->
+      <rect class="sketch-box" x="500" y="390" width="200" height="70" style="stroke: var(--musd); stroke-dasharray: 6 4;" />
+      <text class="sketch-label" x="600" y="420" text-anchor="middle" fill="#00d4aa">Mezo Fee Source</text>
+      <text class="sketch-text-dim" x="600" y="442" text-anchor="middle">veBTC / gauge / chain fees</text>
+
+      <!-- Arrow: Adapter -> Mezo -->
+      <path class="sketch-arrow-musd" d="M 420 430 L 500 425" />
+
+      <!-- Claim holder redeem annotation -->
+      <path d="M 755 280 L 755 340 L 580 340 L 450 290" class="sketch-arrow" style="stroke-dasharray: 4 3;" />
+      <text class="sketch-text-dim" x="620" y="335">claim holder redeems</text>
+
+      <!-- Alice recovers annotation -->
+      <path d="M 145 290 C 145 340 80 340 80 290 L 80 84" style="stroke: var(--accent); stroke-width: 1.5; fill: none; stroke-dasharray: 4 3; marker-end: url(#arrowhead-btc); filter: url(#roughness);" />
+      <text class="sketch-text-dim" x="8" y="200" fill="#f7931a" transform="rotate(-90, 8, 200)">principal return</text>
+
+    </svg>
+
+    <div style="display:flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; justify-content: center;">
+      <div class="mono" style="display:flex; align-items:center; gap:8px;">
+        <span style="width:12px;height:12px;border-radius:3px;background:var(--accent);display:inline-block;"></span>
+        BTC / Principal flow
+      </div>
+      <div class="mono" style="display:flex; align-items:center; gap:8px;">
+        <span style="width:12px;height:12px;border-radius:3px;background:var(--musd);display:inline-block;"></span>
+        MUSD / Reward flow
+      </div>
+      <div class="mono" style="display:flex; align-items:center; gap:8px;">
+        <span style="width:12px;height:12px;border-radius:3px;background:var(--claim);display:inline-block;"></span>
+        Claim NFT flow
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SLIDE 5: STATE MACHINE ========== -->
+<section class="slide" id="states">
+  <div class="grid-bg"></div>
+  <div class="slide-inner">
+    <h3>Lifecycle</h3>
+    <h2>Offer state machine</h2>
+
+    <svg viewBox="0 0 800 360" style="width:100%; max-width:800px; margin-top: 24px;" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- LISTED -->
+      <rect class="sketch-box" x="310" y="10" width="140" height="50" style="stroke: var(--text-dim);" />
+      <text class="sketch-label" x="380" y="42" text-anchor="middle">LISTED</text>
+
+      <!-- CANCELLED -->
+      <rect class="sketch-box" x="80" y="120" width="150" height="50" style="stroke: var(--red); fill: rgba(255,77,106,0.04);" />
+      <text class="sketch-label" x="155" y="152" text-anchor="middle" fill="#ff4d6a">CANCELLED</text>
+
+      <!-- SOLD -->
+      <rect class="sketch-box-accent" x="510" y="120" width="140" height="50" />
+      <text class="sketch-label" x="580" y="152" text-anchor="middle" fill="#f7931a">SOLD</text>
+
+      <!-- SETTLED -->
+      <rect class="sketch-box-musd" x="510" y="210" width="140" height="50" />
+      <text class="sketch-label" x="580" y="242" text-anchor="middle" fill="#00d4aa">SETTLED</text>
+
+      <!-- REDEEMED -->
+      <rect class="sketch-box-claim" x="510" y="300" width="140" height="50" />
+      <text class="sketch-label" x="580" y="332" text-anchor="middle" fill="#7b61ff">REDEEMED</text>
+
+      <!-- CLOSED -->
+      <rect class="sketch-box" x="260" y="300" width="140" height="50" style="stroke: var(--text); stroke-width: 2.5;" />
+      <text class="sketch-label" x="330" y="332" text-anchor="middle">CLOSED</text>
+
+      <!-- Arrows -->
+      <path class="sketch-arrow" d="M 340 60 L 200 120" />
+      <text class="sketch-text-dim" x="240" y="82">cancel</text>
+
+      <path class="sketch-arrow-btc" d="M 420 60 L 550 120" />
+      <text class="sketch-text-dim" x="470" y="82" fill="#f7931a">buy</text>
+
+      <path class="sketch-arrow-musd" d="M 580 170 L 580 210" />
+      <text class="sketch-text-dim" x="592" y="196" fill="#00d4aa">finalize</text>
+
+      <path class="sketch-arrow" d="M 580 260 L 580 300" style="stroke: #7b61ff; marker-end: url(#arrowhead-claim);" />
+      <text class="sketch-text-dim" x="592" y="286" fill="#7b61ff">redeem</text>
+
+      <path class="sketch-arrow" d="M 510 325 L 400 325" />
+      <text class="sketch-text-dim" x="440" y="318">withdraw</text>
+
+      <path class="sketch-arrow" d="M 155 170 L 260 300" style="stroke-dasharray: 4 3;" />
+      <text class="sketch-text-dim" x="166" y="240" fill="var(--text-dim)">reclaim NFT</text>
+
+    </svg>
+  </div>
+</section>
+
+<!-- ========== SLIDE 6: EXAMPLE ========== -->
+<section class="slide" id="example">
+  <div class="grid-bg"></div>
+  <div class="slide-inner">
+    <h3>Live Example</h3>
+    <h2>Concrete numbers, <span class="text-musd">real settlement</span></h2>
+
+    <div class="card-grid">
+      <!-- Winning scenario -->
+      <div class="card" style="border-top: 3px solid var(--musd);">
+        <h4 style="margin-bottom: 16px;">Scenario A: Buyer profits</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <div class="mono text-btc" style="font-size: 1.6rem; font-weight: 700;">0.10 BTC</div>
+            <div class="mono" style="color: var(--text-dim);">position (mock)</div>
+          </div>
+          <div>
+            <div class="mono text-musd" style="font-size: 1.6rem; font-weight: 700;">8 MUSD</div>
+            <div class="mono" style="color: var(--text-dim);">forward price</div>
+          </div>
+        </div>
+        <div style="background: var(--surface2); border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+          <div class="mono" style="margin-bottom: 6px; color: var(--text-dim);">Epoch ends. Realized reward:</div>
+          <div class="mono text-musd" style="font-size: 1.8rem; font-weight: 700;">12 MUSD</div>
+        </div>
+        <table style="width:100%; font-size: 0.85rem;">
+          <tr>
+            <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Alice (seller)</td>
+            <td class="mono text-musd" style="text-align:right;">+8 MUSD + BTC back</td>
+          </tr>
+          <tr>
+            <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Bob (buyer)</td>
+            <td class="mono text-musd" style="text-align:right;">+12 - 8 = +4 MUSD</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Losing scenario -->
+      <div class="card" style="border-top: 3px solid var(--red);">
+        <h4 style="margin-bottom: 16px;">Scenario B: Buyer loses</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <div class="mono text-btc" style="font-size: 1.6rem; font-weight: 700;">0.10 BTC</div>
+            <div class="mono" style="color: var(--text-dim);">position (mock)</div>
+          </div>
+          <div>
+            <div class="mono text-musd" style="font-size: 1.6rem; font-weight: 700;">8 MUSD</div>
+            <div class="mono" style="color: var(--text-dim);">forward price</div>
+          </div>
+        </div>
+        <div style="background: var(--surface2); border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+          <div class="mono" style="margin-bottom: 6px; color: var(--text-dim);">Epoch ends. Realized reward:</div>
+          <div class="mono text-red" style="font-size: 1.8rem; font-weight: 700;">3 MUSD</div>
+        </div>
+        <table style="width:100%; font-size: 0.85rem;">
+          <tr>
+            <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Alice (seller)</td>
+            <td class="mono text-musd" style="text-align:right;">+8 MUSD + BTC back</td>
+          </tr>
+          <tr>
+            <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Bob (buyer)</td>
+            <td class="mono text-red" style="text-align:right;">+3 - 8 = -5 MUSD</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Zero scenario -->
+      <div class="card" style="border-top: 3px solid var(--border);">
+        <h4 style="margin-bottom: 16px;">Scenario C: Zero reward</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <div class="mono text-btc" style="font-size: 1.6rem; font-weight: 700;">0.10 BTC</div>
+            <div class="mono" style="color: var(--text-dim);">position (mock)</div>
+          </div>
+          <div>
+            <div class="mono text-musd" style="font-size: 1.6rem; font-weight: 700;">8 MUSD</div>
+            <div class="mono" style="color: var(--text-dim);">forward price</div>
+          </div>
+        </div>
+        <div style="background: var(--surface2); border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+          <div class="mono" style="margin-bottom: 6px; color: var(--text-dim);">Epoch ends. Realized reward:</div>
+          <div class="mono" style="font-size: 1.8rem; font-weight: 700; color: var(--text-dim);">0 MUSD</div>
+        </div>
+        <table style="width:100%; font-size: 0.85rem;">
+          <tr>
+            <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Alice (seller)</td>
+            <td class="mono text-musd" style="text-align:right;">+8 MUSD + BTC back</td>
+          </tr>
+          <tr>
+            <td class="mono" style="color: var(--text-dim); padding: 4px 0;">Bob (buyer)</td>
+            <td class="mono text-red" style="text-align:right;">0 - 8 = -8 MUSD</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <p style="margin-top: 24px; font-size: 0.85rem; font-style: italic;">
+      All values are demonstration fixtures on Mezo testnet. No guaranteed returns. Buyer bears full downside risk on the purchased claim.
+    </p>
+  </div>
+</section>
+
+<!-- ========== SLIDE 7: WHY DIFFERENT ========== -->
+<section class="slide" id="differentiation">
+  <div class="grid-bg"></div>
+  <div class="slide-inner">
+    <h3>Differentiation</h3>
+    <h2>Not Pendle. Not lending. <span class="text-btc">Something new.</span></h2>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th class="text-btc">Epoch</th>
+          <th>Pendle</th>
+          <th>Borrowing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Yield model</td>
+          <td>Discrete epoch fee claims</td>
+          <td>Continuous yield stream</td>
+          <td>N/A (debt)</td>
+        </tr>
+        <tr>
+          <td>Revenue source</td>
+          <td>Source-specific (gauge, passive, etc.)</td>
+          <td>Undifferentiated yield</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>Principal risk</td>
+          <td class="check">Never leaves seller</td>
+          <td class="partial">Split into PT</td>
+          <td class="cross">Liquidation risk</td>
+        </tr>
+        <tr>
+          <td>Debt created</td>
+          <td class="check">No</td>
+          <td class="check">No</td>
+          <td class="cross">Yes</td>
+        </tr>
+        <tr>
+          <td>Bitcoin-native</td>
+          <td class="check">Yes (Mezo veBTC)</td>
+          <td class="partial">Some BTC assets</td>
+          <td class="partial">Varies</td>
+        </tr>
+        <tr>
+          <td>Settlement</td>
+          <td>In-kind, per epoch</td>
+          <td>At maturity</td>
+          <td>Ongoing repayment</td>
+        </tr>
+        <tr>
+          <td>Forward curve</td>
+          <td class="check">Per-epoch price discovery</td>
+          <td class="check">Implied rate</td>
+          <td class="cross">No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="card-grid" style="margin-top: 32px;">
+      <div class="card">
+        <div class="persona-icon persona-alice">A</div>
+        <h4>For Alice <span class="text-btc">(Seller)</span></h4>
+        <p style="font-size:0.9rem;">Get MUSD today without selling BTC or creating debt. Keep your position. Forfeit only one epoch of uncertain fees.</p>
+      </div>
+      <div class="card">
+        <div class="persona-icon persona-bob">B</div>
+        <h4>For Bob <span class="text-claim">(Buyer)</span></h4>
+        <p style="font-size:0.9rem;">Get exposure to Mezo network activity without locking BTC. Speculate on fee volume for a specific epoch.</p>
+      </div>
+      <div class="card">
+        <div class="persona-icon persona-market">M</div>
+        <h4>For <span class="text-musd">Mezo</span></h4>
+        <p style="font-size:0.9rem;">Discover market prices for fee streams. Build a forward curve. Attract capital that wants revenue exposure, not just BTC beta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SLIDE 8: TECH STACK ========== -->
+<section class="slide" id="tech">
+  <div class="grid-bg"></div>
+  <div class="slide-inner">
+    <h3>Implementation</h3>
+    <h2>Built for the Mezo <span class="text-musd">testnet</span></h2>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4 style="margin-bottom:12px;">Smart Contracts</h4>
+        <ul style="list-style:none; font-size: 0.9rem; color: var(--text-dim);">
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><span class="mono text-btc">EpochMarket.sol</span> — escrow, list, buy, settle, redeem, withdraw</li>
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><span class="mono text-claim">EpochClaim.sol</span> — ERC-721 revenue claim with controlled mint/burn</li>
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><span class="mono text-btc">MockVeBTC.sol</span> — simulated position NFT</li>
+          <li style="padding: 6px 0;"><span class="mono text-musd">MockRewardSource.sol</span> — operator-funded test payouts</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4 style="margin-bottom:12px;">Stack</h4>
+        <ul style="list-style:none; font-size: 0.9rem; color: var(--text-dim);">
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><strong>Chain:</strong> Mezo testnet (31611)</li>
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><strong>Language:</strong> Solidity ^0.8.24</li>
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><strong>Framework:</strong> Foundry (forge, cast, anvil)</li>
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);"><strong>Frontend:</strong> Next.js + wagmi + viem</li>
+          <li style="padding: 6px 0;"><strong>Settlement:</strong> MUSD (testnet) or labeled demo ERC-20</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4 style="margin-bottom:12px;">Safety Invariants</h4>
+        <ul style="list-style:none; font-size: 0.9rem; color: var(--text-dim);">
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">Buyer can <strong>never</strong> access principal</li>
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">Beneficiary is immutable after escrow</li>
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">Atomic buy: MUSD + claim mint or revert</li>
+          <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">Rewards attributed and redeemed at most once</li>
+          <li style="padding: 6px 0;">25 mandatory test cases in Foundry</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stat-row" style="justify-content: center;">
+      <div class="stat">
+        <div class="stat-value text-btc">25</div>
+        <div class="stat-label">test cases</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value text-musd">15</div>
+        <div class="stat-label">invariants</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value text-claim">6</div>
+        <div class="stat-label">state transitions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" style="color: var(--text);">0</div>
+        <div class="stat-label">admin keys over funds</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SLIDE 9: ROADMAP ========== -->
+<section class="slide" id="roadmap">
+  <div class="grid-bg"></div>
+  <div class="slide-inner">
+    <h3>Roadmap</h3>
+    <h2>From proof-of-concept to <span class="text-btc">live fee markets</span></h2>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 16px;">
+      <div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-phase">Phase 0 — Epoch Lite (now)</div>
+            <h4>Proof of rights separation</h4>
+            <p style="font-size: 0.9rem;">Mock NFT escrow, fixed-price MUSD sale, simulated reward settlement, principal return. Testnet demo with real ERC-20 transfers.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-phase">Phase 1 — Live source feasibility</div>
+            <h4>Real veBTC adapter</h4>
+            <p style="font-size: 0.9rem;">Prove escrow, reward claim, and per-epoch isolation with actual Mezo veBTC positions on testnet.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-phase">Phase 2 — Experimental market</div>
+            <h4>First whitelisted source</h4>
+            <p style="font-size: 0.9rem;">RFQ or sealed-bid auction. Real counterparties. Public data explorer and fee history.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-phase">Phase 3 — Revenue market</div>
+            <h4>Cross-position, multi-source</h4>
+            <p style="font-size: 0.9rem;">Multiple revenue sources, forward curves, fractional claims, cross-chain adapters.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom: 16px;">Key research gates</h4>
+        <div class="card" style="margin-bottom: 12px; padding: 20px;">
+          <p style="font-size: 0.85rem; color: var(--text);"><span class="text-btc">P0:</span> Can a vault contract that holds veBTC isolate per-epoch rewards and return the position intact?</p>
+        </div>
+        <div class="card" style="margin-bottom: 12px; padding: 20px;">
+          <p style="font-size: 0.85rem; color: var(--text);"><span class="text-claim">P1:</span> Are per-position fee amounts large enough to justify trading and gas costs?</p>
+        </div>
+        <div class="card" style="margin-bottom: 12px; padding: 20px;">
+          <p style="font-size: 0.85rem; color: var(--text);"><span class="text-musd">P2:</span> Can sold-period votes be enforced as immutable through available interfaces?</p>
+        </div>
+
+        <h4 style="margin-top: 24px; margin-bottom: 16px;">What we're honest about</h4>
+        <ul style="list-style: none; font-size: 0.9rem; color: var(--text-dim);">
+          <li style="padding: 6px 0;">No real BTC deposits in Lite</li>
+          <li style="padding: 6px 0;">No live Mezo fee collection yet</li>
+          <li style="padding: 6px 0;">No production audit</li>
+          <li style="padding: 6px 0;">Demo values are synthetic</li>
+          <li style="padding: 6px 0;">Not a guaranteed-return product</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SLIDE 10: CLOSING ========== -->
+<section class="slide" id="closing">
+  <div class="grid-bg"></div>
+  <div class="glow-btc" style="bottom: -100px; right: -100px;"></div>
+  <div class="slide-inner" style="text-align: center;">
+    <h3>The Vision</h3>
+    <h1 style="margin-bottom: 24px;">
+      Every Bitcoin fee epoch<br>becomes a <span class="text-btc">tradeable market.</span>
+    </h1>
+    <p style="margin: 0 auto; max-width: 560px; font-size: 1.15rem;">
+      Epoch turns protocol revenue into a forward curve. Price discovery for future fees. Liquidity without debt. A new primitive for Bitcoin DeFi on Mezo.
+    </p>
+
+    <div class="stat-row" style="margin-top: 48px; justify-content: center;">
+      <div class="stat">
+        <div class="stat-value text-btc">BTC</div>
+        <div class="stat-label">principal never sold</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value text-musd">MUSD</div>
+        <div class="stat-label">settlement currency</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value text-claim">ERC-721</div>
+        <div class="stat-label">transferable claims</div>
+      </div>
+    </div>
+
+    <div class="cta-bar" style="justify-content: center; margin-top: 48px;">
+      <a href="#hero" class="cta-btn cta-primary">Back to Top</a>
+      <a class="cta-btn cta-secondary" href="https://github.com/" target="_blank">GitHub Repo</a>
+    </div>
+
+    <p style="margin: 40px auto 0; font-size: 0.8rem; color: var(--sketch);">
+      Built for Mezo Buildathon Wave 1 &middot; October 2026 &middot; Testnet only &middot; Not audited
+    </p>
+  </div>
+</section>
+
+<script>
+  // --- Navigation dots ---
+  const slides = document.querySelectorAll('.slide');
+  const navDots = document.getElementById('navDots');
+
+  slides.forEach((slide, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot';
+    dot.title = slide.id;
+    dot.addEventListener('click', () => {
+      slide.scrollIntoView({ behavior: 'smooth' });
+    });
+    navDots.appendChild(dot);
+  });
+
+  const dots = document.querySelectorAll('.nav-dot');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(slides).indexOf(entry.target);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // --- Animate on scroll ---
+  const animObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.animate-in').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    animObserver.observe(el);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+node_modules/
+.next/
+.env.local
+out/
+cache/
+broadcast/
+*.log
+.DS_Store

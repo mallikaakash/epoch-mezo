@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#191d18">
+  <title>Mezo Testnet Starter</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <main>
+    <header><span class="eyebrow">MEZO BUILDATHON / TESTNET</span><h1>Wallet workbench</h1><p>Connect an EVM wallet to check your Mezo testnet network and balances. This is a project foundation, not a submitted product.</p></header>
+    <section class="panel" aria-labelledby="wallet-title">
+      <div class="panel-head"><h2 id="wallet-title">Wallet</h2><span class="pill" id="network">Disconnected</span></div>
+      <p id="status" role="status" aria-live="polite">No wallet connected.</p>
+      <div class="actions"><button id="connect">Connect wallet</button><button id="switch" class="secondary" hidden>Add / switch to Mezo testnet</button><button id="refresh" class="secondary" hidden>Refresh balances</button></div>
+      <dl><div><dt>Address</dt><dd id="address">—</dd></div><div><dt>BTC for gas</dt><dd id="btc">—</dd></div><div><dt>MUSD</dt><dd id="musd">—</dd></div><div><dt>MEZO</dt><dd id="mezo">—</dd></div></dl>
+    </section>
+    <section class="panel links" aria-labelledby="next-title"><h2 id="next-title">Testnet resources</h2><a href="https://faucet.test.mezo.org/" target="_blank" rel="noopener noreferrer">Get test BTC and MEZO ↗</a><a href="https://testnet.mezo.org/" target="_blank" rel="noopener noreferrer">Get MUSD in the Mezo testnet app ↗</a><a href="https://explorer.test.mezo.org/" target="_blank" rel="noopener noreferrer">Open testnet explorer ↗</a></section>
+    <footer>Chain ID 31611 · Read-only wallet inspection · No transactions are sent</footer>
+  </main>
+</body>
+</html>

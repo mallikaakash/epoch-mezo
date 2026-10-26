@@ -1,0 +1,33 @@
+{
+  "name": "mezo-buildathon-testnet-starter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "starter": "node scripts/serve.mjs",
+    "build": "next build",
+    "contracts:build": "forge build && node scripts/export-abis.mjs",
+    "contracts:test": "forge test -vvv",
+    "demo:local": "node scripts/local-demo.mjs",
+    "check": "tsc --noEmit && node --check scripts/local-demo.mjs && node --check scripts/export-abis.mjs && node --check scripts/check-rpc.mjs",
+    "rpc:check": "node scripts/check-rpc.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.0.2",
+    "@tanstack/react-query": "5.90.5",
+    "next": "16.4.3",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "viem": "2.57.11",
+    "wagmi": "3.7.9"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "typescript": "7.0.2"
+  }
+}
